@@ -17,7 +17,10 @@ This has been tested in Chrome and Safari.
 ## TODO:
 The next steps that I still hope to get to are:
  - to support multiple tags (currently treating all tags seperated by `|` as a single value)
+ - sort by date
+ - filter by tag/source/org
  - Have fun with Ionic theming. Using the sass plugin for stencil led to a world of problems relating to the node sass implementation.
+
  - Convert the list items to ionic cards.
  - Get unit tests - note the ones present are the product of the Ionic PWA starter boilerplate. 
  - Some CSS transitions would be nice. 
