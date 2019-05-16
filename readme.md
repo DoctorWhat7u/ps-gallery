@@ -21,6 +21,7 @@ The next steps that I still hope to get to are:
  - Convert the list items to ionic cards.
  - Get unit tests - note the ones present are the product of the Ionic PWA starter boilerplate. 
  - Some CSS transitions would be nice. 
+ - Virtual scrolling would help performance although with such a short list of images its not yet an issue.
 
 
 
