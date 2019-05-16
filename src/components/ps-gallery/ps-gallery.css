@@ -3,7 +3,7 @@
     padding: 1em;
 }
 .image-item-container img {
-flex: 1;
+    flex: 0;
 }
 .image-item-metadata {
     display: flex;

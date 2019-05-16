@@ -25,7 +25,6 @@ The next steps that I still hope to get to are:
 
 
 
-
 # Built With Ionic PWA Toolkit Beta
 
 The PWA Toolkit is a starting point for building Progressive Web Apps using Ionic and Stencil.

@@ -15,7 +15,6 @@ export class AppRoot {
 
   componentWillLoad() {
     this.store.setStore(configStore());
-    console.info('App store configured');
   }
 
 

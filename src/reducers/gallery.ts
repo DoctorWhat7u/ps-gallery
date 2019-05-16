@@ -106,7 +106,7 @@ const galleryReducer = (state: GalleryState = getInitialState(),
         case TypeKeys.SHOW_NEXT_GALLERY_PAGE: {
             let qtyDisplayed = state.qtyDisplayed + 4;
             let isMax = false;
-            if(state.images && state.images.length && qtyDisplayed >= state.images.length - 1) {
+            if(state.images && state.images.length && qtyDisplayed >= state.images.length) {
                 isMax = true;
                 qtyDisplayed = state.images.length;
             }
@@ -127,7 +127,11 @@ const galleryReducer = (state: GalleryState = getInitialState(),
          * Remove tag filter
          */
         case TypeKeys.REMOVE_TAG_FILTER: {
-            return { ...state, isFilteredByTag: false, qtyDisplayed: 4, tagFilter: '', images: state.originalImages};
+            let isMax = false;
+            if(state.originalImages.length <= 4) {
+                isMax = true;
+            }
+            return { ...state, isMax, isFilteredByTag: false, qtyDisplayed: 4, tagFilter: '', images: state.originalImages};
         }
     }
 

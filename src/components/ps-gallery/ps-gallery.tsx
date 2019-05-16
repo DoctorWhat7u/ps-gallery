@@ -28,13 +28,16 @@ export class PsGallery {
   loadGallery: Action;
   showNextGalleryPage: Action;
   removeTagFilter: Action;
-  
+  filterByTag: Action;
+
+  infiniteScroll: HTMLIonInfiniteScrollElement;
+
   componentDidLoad() {
 
     // This logic would ordinarily go in a selector
     // but I seem to be maximizing complexity by trying to 
     // keep things simple: 
-
+    this.initInfinitScroll();
     this.store.mapStateToProps(this, (state) => {
       const {
         isLoading,
@@ -47,7 +50,9 @@ export class PsGallery {
       } = state.galleryReducer;
 
       let images = state.galleryReducer.images.slice(0, state.galleryReducer.qtyDisplayed);
-
+      
+      //this.infiniteScroll.disabled = isMax;
+      
       return { images,
         isLoading,
         isError,
@@ -67,33 +72,18 @@ export class PsGallery {
     });
 
     this.loadGallery();
-
-    this.initInfinitScroll();
-    
   }
 
   initInfinitScroll() {
-    const infiniteScroll = document.getElementById('infinite-scroll');
+    this.infiniteScroll = (document.getElementById('infinite-scroll') as HTMLIonInfiniteScrollElement);
 
-    infiniteScroll.addEventListener('ionInfinite', (event) => {
-      
+    this.infiniteScroll.addEventListener('ionInfinite', (event) => {
       this.showNextGalleryPage();
-
-      setTimeout(function() {
+      setTimeout( () => {
         console.info('ionInfinite Done', event);
-        let infiniteScrollComponent = (event.target as HTMLIonInfiniteScrollElement)
-        infiniteScrollComponent.complete();
-        if(this.isMax) {
-          infiniteScrollComponent.disabled = true;
-        }
-      }, 500);
+        this.infiniteScroll.complete();    
+      }, 200);
     });
-  }
-
-
-  filterByTag(tag:string) {
-    console.info('clicked filter by ' + tag);
-    this.filterByTag(tag);
   }
 
 
@@ -103,16 +93,16 @@ export class PsGallery {
         <ion-toolbar color="light">
           <ion-title>Photo Gallery</ion-title>
 
-          {this.isFilteredByTag && 
+         
           <ion-buttons slot="primary">
+          {this.isFilteredByTag &&  
             <ion-button onClick={()=>this.removeTagFilter()}>
-               
                   <ion-label>{this.tagFilter}</ion-label>
                   <ion-icon name="close" color="primary"></ion-icon>
-               
               </ion-button>
+            }
           </ion-buttons>
-          }
+        
 
         </ion-toolbar>
       </ion-header>,
@@ -141,7 +131,7 @@ export class PsGallery {
           </ion-item>
         )}
        </ion-list>
-        <ion-infinite-scroll threshold="15%" id="infinite-scroll">
+        <ion-infinite-scroll threshold="100px" id="infinite-scroll" disabled={this.isMax}>
           <ion-infinite-scroll-content
             loading-spinner="bubbles"
             loading-text="Loading more data...">
