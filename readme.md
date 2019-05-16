@@ -9,7 +9,10 @@ Make sure you are use node 11.x and NPM >=6.4, if you use NVM: `nvm use v11`
 `npm install -g yarn` Yarn is required to resolve an issue with redux-thunk losing its redux dependency.
 
 
-To start, run `yarn install && npm run start`
+To start, run `yarn install && npm run start`. Once the build is complete it will open a browser window and load the app from localhost.
+
+This has been tested in Chrome and Safari.
+
 
 ## TODO:
 The next steps that I still hope to get to are:
@@ -23,7 +26,7 @@ The next steps that I still hope to get to are:
 
 
 
-# Ionic PWA Toolkit Beta
+# Built With Ionic PWA Toolkit Beta
 
 The PWA Toolkit is a starting point for building Progressive Web Apps using Ionic and Stencil.
 This combination of tools gives you the ability to build a fast, efficient PWA out of the box.
