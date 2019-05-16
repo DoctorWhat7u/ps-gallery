@@ -74,7 +74,6 @@ export class PsGallery {
 
 
   componentWillUnload() {
-    //TODO: 
     this.infiniteScroll.removeEventListener('ionInfinite', this.handleIonInfiniteEvent);
   }
 
