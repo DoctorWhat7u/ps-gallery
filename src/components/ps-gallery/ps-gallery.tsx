@@ -50,9 +50,7 @@ export class PsGallery {
       } = state.galleryReducer;
 
       let images = state.galleryReducer.images.slice(0, state.galleryReducer.qtyDisplayed);
-      
-      //this.infiniteScroll.disabled = isMax;
-      
+  
       return { images,
         isLoading,
         isError,
@@ -74,6 +72,7 @@ export class PsGallery {
     this.loadGallery();
   }
 
+
   initInfinitScroll() {
     this.infiniteScroll = (document.getElementById('infinite-scroll') as HTMLIonInfiniteScrollElement);
 
@@ -92,8 +91,6 @@ export class PsGallery {
       <ion-header>
         <ion-toolbar color="light">
           <ion-title>Photo Gallery</ion-title>
-
-         
           <ion-buttons slot="primary">
           {this.isFilteredByTag &&  
             <ion-button onClick={()=>this.removeTagFilter()}>
@@ -102,14 +99,11 @@ export class PsGallery {
               </ion-button>
             }
           </ion-buttons>
-        
-
         </ion-toolbar>
       </ion-header>,
 
       <ion-content padding>
        <ion-list>
-         
        {this.images && this.images.map( (image) =>
         <ion-item>
             <div class='image-item-container'>
@@ -135,13 +129,9 @@ export class PsGallery {
           <ion-infinite-scroll-content
             loading-spinner="bubbles"
             loading-text="Loading more data...">
-        
           </ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>
-
-        
-      
     ];
   }
 }
