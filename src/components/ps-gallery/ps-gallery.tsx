@@ -32,8 +32,8 @@ export class PsGallery {
 
   infiniteScroll: HTMLIonInfiniteScrollElement;
 
-  componentDidLoad() {
 
+  componentDidLoad() {
     // This logic would ordinarily go in a selector
     // but I seem to be maximizing complexity by trying to 
     // keep things simple: 
@@ -73,16 +73,23 @@ export class PsGallery {
   }
 
 
+  componentWillUnload() {
+    //TODO: 
+    this.infiniteScroll.removeEventListener('ionInfinite', this.handleIonInfiniteEvent);
+  }
+
+
+  handleIonInfiniteEvent = (event) => {
+    this.showNextGalleryPage();
+    setTimeout( () => {
+      console.info('ionInfinite Done', event);
+      this.infiniteScroll.complete();    
+    }, 200);
+  }
+
   initInfinitScroll() {
     this.infiniteScroll = (document.getElementById('infinite-scroll') as HTMLIonInfiniteScrollElement);
-
-    this.infiniteScroll.addEventListener('ionInfinite', (event) => {
-      this.showNextGalleryPage();
-      setTimeout( () => {
-        console.info('ionInfinite Done', event);
-        this.infiniteScroll.complete();    
-      }, 200);
-    });
+    this.infiniteScroll.addEventListener('ionInfinite', this.handleIonInfiniteEvent);
   }
 
 
@@ -102,7 +109,10 @@ export class PsGallery {
         </ion-toolbar>
       </ion-header>,
 
-      <ion-content padding>
+      <ion-content>
+      {this.isLoading && 
+        <ion-spinner name="bubbles"></ion-spinner>
+      }
        <ion-list>
        {this.images && this.images.map( (image) =>
         <ion-item>
