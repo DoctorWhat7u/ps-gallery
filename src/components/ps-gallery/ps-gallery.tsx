@@ -107,9 +107,8 @@ export class PsGallery {
           <ion-buttons slot="primary">
             <ion-button onClick={()=>this.removeTagFilter()}>
                
-                  <ion-icon name="pricetag" color="primary"></ion-icon>
                   <ion-label>{this.tagFilter}</ion-label>
-                  <ion-icon name="close"></ion-icon>
+                  <ion-icon name="close" color="primary"></ion-icon>
                
               </ion-button>
           </ion-buttons>
