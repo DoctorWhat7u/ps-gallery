@@ -1,7 +1,7 @@
 import { Component, Prop, State } from '@stencil/core';
 import { Store, Action } from '@stencil/redux';
 import { GalleryImages } from '../../reducers/gallery';
-import { loadGallery, showNextGalleryPage, filterByTag, removeTagFilter } from '../../actions/gallery';
+import { loadGallery, showNextGalleryPage, filterByTag, removeTagFilter, toggleFilterByActive } from '../../actions/gallery';
 
 @Component({
   tag: 'ps-gallery',
@@ -17,6 +17,7 @@ export class PsGallery {
   @State() isMax: boolean;
   @State() isFilteredByTag: boolean;
   @State() tagFilter: string;
+  @State() isFilteredByActive: boolean;
 
   /**
    * The maximum index of the images to display.
@@ -29,8 +30,10 @@ export class PsGallery {
   showNextGalleryPage: Action;
   removeTagFilter: Action;
   filterByTag: Action;
+  toggleFilterByActive: Action;
 
   infiniteScroll: HTMLIonInfiniteScrollElement;
+  filterActiveToggle: HTMLIonToggleElement;
 
 
   componentDidLoad() {
@@ -38,6 +41,8 @@ export class PsGallery {
     // but I seem to be maximizing complexity by trying to 
     // keep things simple: 
     this.initInfinitScroll();
+    this.initActiveFilterToggle();
+
     this.store.mapStateToProps(this, (state) => {
       const {
         isLoading,
@@ -46,7 +51,8 @@ export class PsGallery {
         qtyDisplayed,
         isMax,
         isFilteredByTag,
-        tagFilter
+        tagFilter,
+        isFilteredByActive
       } = state.galleryReducer;
 
       let images = state.galleryReducer.images.slice(0, state.galleryReducer.qtyDisplayed);
@@ -58,7 +64,8 @@ export class PsGallery {
         qtyDisplayed,
         isMax ,
         isFilteredByTag,
-        tagFilter
+        tagFilter,
+        isFilteredByActive
       };
     });
 
@@ -66,7 +73,8 @@ export class PsGallery {
       loadGallery,
       showNextGalleryPage,
       filterByTag,
-      removeTagFilter
+      removeTagFilter,
+      toggleFilterByActive
     });
 
     this.loadGallery();
@@ -75,10 +83,11 @@ export class PsGallery {
 
   componentWillUnload() {
     this.infiniteScroll.removeEventListener('ionInfinite', this.handleIonInfiniteEvent);
+    this.filterActiveToggle.removeEventListener('ionChange', this.handleChangeFilterActive);
   }
 
 
-  handleIonInfiniteEvent = (event) => {
+  handleIonInfiniteEvent = (event:CustomEvent) => {
     this.showNextGalleryPage();
     setTimeout( () => {
       console.info('ionInfinite Done', event);
@@ -86,9 +95,19 @@ export class PsGallery {
     }, 200);
   }
 
+  handleChangeFilterActive = (event:CustomEvent) => {
+      console.info('toggle filter active', this.isFilteredByActive, event.target);
+      this.toggleFilterByActive(!this.isFilteredByActive);
+  };
+
   initInfinitScroll() {
     this.infiniteScroll = (document.getElementById('infinite-scroll') as HTMLIonInfiniteScrollElement);
     this.infiniteScroll.addEventListener('ionInfinite', this.handleIonInfiniteEvent);
+  }
+
+  initActiveFilterToggle() {
+    this.filterActiveToggle = (document.getElementById('filter-active-toggle') as HTMLIonToggleElement);
+    this.filterActiveToggle.addEventListener('ionChange', this.handleChangeFilterActive);
   }
 
 
@@ -99,19 +118,25 @@ export class PsGallery {
           <ion-title>Photo Gallery</ion-title>
           <ion-buttons slot="primary">
           {this.isFilteredByTag &&  
-            <ion-button onClick={()=>this.removeTagFilter()}>
-                  <ion-label>{this.tagFilter}</ion-label>
-                  <ion-icon name="close" color="primary"></ion-icon>
-              </ion-button>
+            <ion-button  mode="ios" fill="solid" color="primary" onClick={()=>this.removeTagFilter()}>
+              <ion-label>{this.tagFilter}</ion-label>
+              <ion-icon slot="end" name="close" color="secondary"></ion-icon>
+            </ion-button>
             }
           </ion-buttons>
         </ion-toolbar>
       </ion-header>,
-
+      
+       <ion-list>
+       <ion-item>
+         <ion-label>Hide inactive</ion-label>
+         <ion-toggle id="filter-active-toggle" slot="end" color="primary" checked={this.isFilteredByActive}></ion-toggle>
+         </ion-item>
+       </ion-list>,
       <ion-content>
-      {this.isLoading && 
-        <ion-spinner name="bubbles"></ion-spinner>
-      }
+        {this.isLoading &&  
+          <ion-spinner name="bubbles"></ion-spinner>
+        }
        <ion-list>
        {this.images && this.images.map( (image) =>
         <ion-item>

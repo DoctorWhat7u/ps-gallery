@@ -32,6 +32,11 @@ export interface RemoveTagFilterAction {
     tag: string
 };
 
+export interface FilterByActiveAction {
+    type: TypeKeys.FILTER_BY_ACTIVE,
+    active: boolean
+};
+
 /**
  * Thunk action creator to fetch the gallery json data. 
  */
@@ -80,4 +85,11 @@ export const removeTagFilter = () => async(dispatch) => {
     return dispatch({
         type: TypeKeys.REMOVE_TAG_FILTER
     });
+};
+
+export const toggleFilterByActive = (active:boolean) => async(dispatch) => {
+    return dispatch({
+        type: TypeKeys.FILTER_BY_ACTIVE,
+        active
+    })
 };

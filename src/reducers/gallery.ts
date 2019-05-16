@@ -100,6 +100,7 @@ const galleryReducer = (state: GalleryState = getInitialState(),
             return { ...state, isLoading: false, isError: true, errorMessage: action.message};   
         }
 
+
         /**
          * Increments the qtyDisplayed by 4, capping at the last index of gallery images array
          */
@@ -115,23 +116,69 @@ const galleryReducer = (state: GalleryState = getInitialState(),
 
 
         /**
-         * Filter images based on the actions tag property
+         * Filter images based on the actions tag property. If the filterByActive is
+         * set to true then that filter is reapplied.
          */
         case TypeKeys.FILTER_BY_TAG: {
-            //let images = state.images.filter( (image) => image.tag === action.tag );
-            return { ...state, isFilteredByTag: true, qtyDisplayed: 4, tagFilter: action.tag, images: state.images.filter( (image) => image.tag === action.tag )};
+            let images = state.originalImages.filter( (image) => image.tag === action.tag );
+
+            if(state.isFilteredByActive) {
+                images = images.filter( (image) => image.active === 'yes' );
+            }
+
+            return { ...state, 
+                isFilteredByTag: true, 
+                qtyDisplayed: 4, 
+                tagFilter: action.tag, 
+                images: state.images.filter( (image) => image.tag === action.tag )
+            };
         }
 
 
         /**
-         * Remove tag filter
+         * Remove tag filter. If the filterByActive is set to true then that 
+         * filter is reapplied.
          */
         case TypeKeys.REMOVE_TAG_FILTER: {
             let isMax = false;
             if(state.originalImages.length <= 4) {
                 isMax = true;
             }
-            return { ...state, isMax, isFilteredByTag: false, qtyDisplayed: 4, tagFilter: '', images: state.originalImages};
+            let images = state.originalImages;
+            if(state.isFilteredByActive) {
+                images = images.filter( (image) => image.active === 'yes' );
+            }
+            return { ...state, isMax, 
+                isFilteredByTag: false, 
+                qtyDisplayed: 4, 
+                tagFilter: '', 
+                images
+            };
+        }
+
+        /**
+         * Toggle whether to only show active images. It also resets the "page"
+         * to the first 4 items and re-applies any tag filters.
+         */
+        case TypeKeys.FILTER_BY_ACTIVE: {
+            
+            let images = state.originalImages;
+            
+            if(action.active) {
+                images = images.filter( (image) => image.active === 'yes' );
+            }
+            
+            if(state.isFilteredByTag) {
+                images = images.filter( (image) => image.tag === state.tagFilter );
+            }
+
+            let isMax = false;
+            if(images.length <= 4) {
+                isMax = true;
+            }
+
+            return { ...state, isFilteredByActive:action.active, isMax, images, qtyDisplayed: 4};
+
         }
     }
 

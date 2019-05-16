@@ -4,7 +4,8 @@ import {
     LoadGalleryErrorAction,
     ShowNextGalleryPageAction,
     FilterByTagAction,
-    RemoveTagFilterAction
+    RemoveTagFilterAction,
+    FilterByActiveAction
 } from './gallery';
 
 export enum TypeKeys {
@@ -15,7 +16,8 @@ export enum TypeKeys {
     LOAD_GALLERY_ERROR = 'LOAD_GALLERY_ERROR',
     SHOW_NEXT_GALLERY_PAGE = 'SHOW_NEXT_GALLERY_PAGE',
     FILTER_BY_TAG = 'FILTER_BY_TAG',
-    REMOVE_TAG_FILTER = 'REMOVE_TAG_FILTER'
+    REMOVE_TAG_FILTER = 'REMOVE_TAG_FILTER',
+    FILTER_BY_ACTIVE = 'FILTER_BY_ACTIVE'
 };
 
 export interface NullAction {
@@ -30,4 +32,5 @@ export type ActionTypes =
     | ShowNextGalleryPageAction
     | FilterByTagAction
     | RemoveTagFilterAction
+    | FilterByActiveAction
 ;
