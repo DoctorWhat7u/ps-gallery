@@ -1,0 +1,26 @@
+.image-item-container {
+    display: flex;
+    padding: 1em;
+}
+.image-item-container img {
+flex: 1;
+}
+.image-item-metadata {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 1em;
+    flex: 1;
+}
+
+.image-item-metadata p {
+    line-height: 1.3em;
+    padding: 0;
+    margin:0;
+}
+.image-item-metadata h4 {
+    font-size: 1.1em;
+    line-height: 1.3em;
+    padding: 0;
+    margin:0;
+}

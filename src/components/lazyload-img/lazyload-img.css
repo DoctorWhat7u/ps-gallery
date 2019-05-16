@@ -1,0 +1,10 @@
+:host {
+    display: block;
+  }
+  
+  
+  img {
+    max-width: 100%;
+    height: calc( (100vh - 100px) / 4);
+    flex: none;
+  }
